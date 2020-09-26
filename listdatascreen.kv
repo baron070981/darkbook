@@ -1,0 +1,75 @@
+
+<SelectableLabel>:
+    #size_hint:(1,0.1)
+    color:.1,1,.3,1
+    canvas.before:
+        Color:
+            rgba: (.1, .1, .1, .6) if self.selected else (0,0,0,1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+<PeriodsView>:
+    RecycleView:
+        data: root.data
+        viewclass: 'SelectableLabel'
+        orientation: "vertical"
+        spacing: 40
+        padding:10, 10
+        #space_x: self.size[0]/3
+  
+        SelectableRecycleBoxLayout: 
+            color:(0, 0.7, 0.4, 0.8) 
+            default_size: None, dp(56) 
+            size_hint:(1,0.03)
+      
+            # defines the size of the widget in reference to width and height 
+            default_size_hint: 1, None 
+            size_hint_y: None
+            height: self.minimum_height 
+            orientation: 'vertical'
+
+
+
+
+<DataListScreen>:
+    name:'datalist'
+    
+    BoxLayout:
+        padding:2
+        spacing:2
+        orientation:'vertical'
+        PeriodsView:
+        
+        BoxLayout:
+            orientation:'horizontal'
+            spacing:3
+            padding:3
+            size_hint:(1,0.1)
+            Button:
+                id:newdatabtn
+                text:'new'
+                on_press:
+                    root.into_create_data()
+            Button:
+                text:'settings'
+            Button:
+                text:'full'
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+
+
