@@ -55,7 +55,7 @@ class DBHelper:
     def createdb(self):
         print("Create new database...")
         self.__CURSOR.execute("""CREATE TABLE IF NOT EXISTS manys
-                                 (id INTEGER AUTOINCRIMENT PRIMARY KEY, 
+                                 (id INTEGER PRIMARY KEY, 
                                   date text, 
                                   time text, 
                                   many real)
@@ -67,8 +67,10 @@ class DBHelper:
     def get_ids(self):
         rows = self.__CURSOR.execute("SELECT * FROM manys ORDER BY id")
         temp = rows.fetchall()
-        if len(temp) > 0:
+        if len(temp) > 1:
             self.__lastid = int(temp[-1][0])
+        if len(temp) == 1:
+            self.__lastid = int(temp[0][0])
     
     
     # добавление данных в базу
@@ -170,11 +172,17 @@ class DataProcess:
         self.periods = list()
     
     
-    # принимает список строк с данными
+    # 
+    def formattostring(self, lst):
+        return list(map(str, lst))
+    
+    
+    # принимает список с данными
     # в формате [ 'id', 'yyyy.mm.dd', 'HH.MM.SS', '$$.$$' ]
     # возвращает объект Datas
-    def newDataObject(self, datastrlist):
+    def _newDataObject(self, datastrlist):
         ok = True
+        datastrlist = self.formattostring(datastrlist)
         data = Datas()
         try:
             d = list(map(int,datastrlist[1].split('.')))+[0,0,0]
@@ -191,28 +199,11 @@ class DataProcess:
         return data
     
     
-    # принимает двумерный список строк с данными
+    # принимает двумерный список с данными
     # возвращает объект список объектов Datas
     def get_datas(self, datastrlist):
-        lst = list(map(self.newDataObject,datastrlist))
+        lst = list(map(self._newDataObject,datastrlist))
         return lst
-    
-    
-    # принимает список строк с данными
-    # в формате [ 'id', 'yyyy.mm.dd', 'HH.MM.SS', '$$.$$' ]
-    # возвращает объект StringDatas
-    def get_stringdata(self, datastrlist):
-        data       = StringDatas()
-        data.idd   = str(datastrlist[0])
-        data.mdate = str(datastrlist[1])
-        data.mtime = str(datastrlist[2])
-        data.many  = str(datastrlist[3])
-        return data
-    
-    
-    # список строк из StringDatas
-    def get_lst_from_stringdata(self, sd=StringDatas):
-        return list([sd.idd, sd.mdate, sd.mtime, sd.many])
     
     
     # список строк из Datas
@@ -220,16 +211,9 @@ class DataProcess:
         return [str(d.idd),str(d.mdate),str(d.mtime),str(d.many)]
     
     
-    # преобразует StringDatas в Datas
-    def convert_stringdata(self, sd=StringDatas):
-        s = self.get_lst_from_stringdata(sd)
-        return self.newDataObject(s)
     
-    
-    # преобразует Datas в StringDatas
-    def convert_datas(self, d=Datas):
-        s = self.get_lst_from_datas(d)
-        return self.get_stringdata(s)
+    def get_string_from_datas(self, datas):
+        return ' '.join(self.get_lst_from_datas(datas))
     
     
     def compare_datas(self, dt1:Datas, dt2:Datas):
@@ -253,21 +237,12 @@ class DataProcess:
         if len(dataobjects) == 0:
             return None
         t = dataobjects[0]
-        for data in dataobjects:
-            d = dict()
-            idd = str(data.idd)
-            mdate = str(data.mdate)
-            mtime = str(data.mtime)
-            many = str(data.many)
-            s = mdate+'    '+many
+        for dt in dataobjects:
+            s = self.get_string_from_datas(dt)
+            idd = dt.idd
             res = dict({'text':s,'integer':idd})
-            viewdata.append(d)
-        
-        return viewdata
-    
-    
-    def add_viewdata(self, viewdata, datastrlist):
-        
+            viewdata.append(res)
+            
         return viewdata
     
     
@@ -286,11 +261,17 @@ if __name__ == '__main__':
     userdata = DBHelper()
     dp = DataProcess()
     
-    res = userdata.get_all_data()
-    pprint(res)
-    datas = dp.get_datas(res)
-    pprint(datas)
-    datas = dp.sort_datas(datas)
+    dbdata = userdata.get_all_data()
+    print('Get datas from DB:')
+    pprintln(dbdata)
+    
+    datas = dp.get_datas(dbdata)
+    print('Get datas objects:')
+    println(datas)
+    
+    views = dp.get_viewdatas(datas)
+    print('Get viewdatas:')
+    pprintln(views)
     
     
     userdata.close()
