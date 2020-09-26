@@ -106,7 +106,12 @@ class PeriodsView(RecycleView):
                       # { 'text':'10.08.2020-09.09.2021' }, 
                       # { 'text':'10.09.2020-09.10.2021' }, 
                     # ]
-        self.data = dp.get_viewdatas(alldata)
+        
+        data = dp.get_viewdatas(alldata)
+        if data == None or len(data) == 0:
+            self.data = []
+        else:
+            self.data = data
     
     
     def into_dataview(self):
