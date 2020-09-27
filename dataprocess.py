@@ -56,7 +56,6 @@ class DBHelper:
         self.__dbname = dbname
         self.__TABLE = 'manys'
         self.__DATE = 'date'
-        self.__TIME = 'time'
         self.__MANY = 'many'
         self.__ID = 'id'
         self.__CONN = sqlite3.connect(self.__dbname)
@@ -69,16 +68,18 @@ class DBHelper:
     # если есть, получается последний id
     def createdb(self):
         print("Create new database...")
+        # создается бд если не существует
         self.__CURSOR.execute("""CREATE TABLE IF NOT EXISTS manys
                                  (id INTEGER PRIMARY KEY, 
                                   date text,
                                   many real)
                               """)
-        self.get_ids()
+        # получение последнего id
+        self.__get_ids()
     
     
     # получает последний id
-    def get_ids(self):
+    def __get_ids(self):
         rows = self.__CURSOR.execute("SELECT * FROM manys ORDER BY id")
         temp = rows.fetchall()
         if len(temp) > 0:
@@ -86,12 +87,16 @@ class DBHelper:
     
     
     # добавление данных в базу
-    def add_data(self, datestr, timestr, manyfloat):
+    # datestr - string
+    # manyfloat - float
+    def add_data(self, datestr, manyfloat):
         self.__CURSOR.execute("INSERT INTO manys\
-                                  (date,time,many)\
-                                   VALUES (?,?,?)", 
-                                  (datestr,timestr,manyfloat))
+                                (date,time,many)\
+                                 VALUES (?,?)", 
+                                (datestr,manyfloat))
+        # сохранение данных
         self.__CONN.commit()
+        # изменение последнего id
         self.__lastid = self.__CURSOR.lastrowid
     
     
@@ -100,6 +105,7 @@ class DBHelper:
         self.__CONN.close()
     
     
+    # вывод последнего id
     @property
     def ids(self):
         print(self.__lastid)
@@ -179,80 +185,6 @@ class DataProcess:
         self.periods = list()
     
     
-    # 
-    def formattostring(self, lst):
-        return list(map(str, lst))
-    
-    
-    # принимает список с данными
-    # в формате [ 'id', 'yyyy.mm.dd', 'HH.MM.SS', '$$.$$' ]
-    # возвращает объект Datas
-    def _newDataObject(self, datastrlist):
-        ok = True
-        datastrlist = self.formattostring(datastrlist)
-        data = Datas()
-        try:
-            d = list(map(int,datastrlist[1].split('.')))+[0,0,0]
-            data.mdate = datetime.date(d[0],d[1],d[2])
-        except:
-            return None
-        try:
-            d = list(map(int,datastrlist[2].split('.')))+[0,0,0]
-            data.mtime = datetime.time(d[0],d[1],d[2])
-        except:
-            return None
-        data.idd = int(datastrlist[0])
-        data.many = float(datastrlist[3])
-        return data
-    
-    
-    # принимает двумерный список с данными
-    # возвращает объект список объектов Datas
-    def get_datas(self, datastrlist):
-        lst = list(map(self._newDataObject,datastrlist))
-        return lst
-    
-    
-    # список строк из Datas
-    def get_lst_from_datas(self, d=Datas):
-        return [str(d.idd),str(d.mdate),str(d.mtime),str(d.many)]
-    
-    
-    
-    def get_string_from_datas(self, datas):
-        return ' '.join(self.get_lst_from_datas(datas))
-    
-    
-    def compare_datas(self, dt1:Datas, dt2:Datas):
-        if dt1.mdate > dt2.mdate:
-            t = dt1
-            dt1 = dt2
-            dt2 = t
-        return dt1,dt2
-    
-    
-    # сортирует список объектов Datas по дате
-    def sort_datas(self, DatasArray:list):
-        return list(map(self.compare_datas, DatasArray))
-    
-    
-    # принимает двумерный список с данными
-    # в формате [ [Datas], [Datas] ]
-    # возвращает список словарей
-    def get_viewdatas(self, dataobjects:[]):
-        viewdata = list()
-        if len(dataobjects) == 0:
-            return None
-        t = dataobjects[0]
-        for dt in dataobjects:
-            s = self.get_string_from_datas(dt)
-            idd = dt.idd
-            res = dict({'text':s,'integer':idd})
-            viewdata.append(res)
-            
-        return viewdata
-    
-    
     
 def println(string):
     print(string)
@@ -268,17 +200,7 @@ if __name__ == '__main__':
     userdata = DBHelper()
     dp = DataProcess()
     
-    dbdata = userdata.get_all_data()
-    # print('Get datas from DB:')
-    pprintln(dbdata)
     
-    # datas = dp.get_datas(dbdata)
-    # print('Get datas objects:')
-    # println(datas)
-    
-    # views = dp.get_viewdatas(datas)
-    # print('Get viewdatas:')
-    # pprintln(views)
     
     
     userdata.close()
