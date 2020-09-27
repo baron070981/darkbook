@@ -10,6 +10,21 @@ import re
 from dataclasses import dataclass
 
 
+'''
+создание базы
+получение данных из базы
+изменение данных в базе
+удаление данных из базы
+
+1.
+на вход: Datas или список Datas
+на выход: Datas или список Datas
+1.
+на вход: список строк с данными
+на выход: список строк с данными
+
+'''
+
 @dataclass
 class Datas:
     mdate:object = datetime.date(dtm.now().year,
@@ -56,8 +71,7 @@ class DBHelper:
         print("Create new database...")
         self.__CURSOR.execute("""CREATE TABLE IF NOT EXISTS manys
                                  (id INTEGER PRIMARY KEY, 
-                                  date text, 
-                                  time text, 
+                                  date text,
                                   many real)
                               """)
         self.get_ids()
@@ -67,10 +81,8 @@ class DBHelper:
     def get_ids(self):
         rows = self.__CURSOR.execute("SELECT * FROM manys ORDER BY id")
         temp = rows.fetchall()
-        if len(temp) > 1:
+        if len(temp) > 0:
             self.__lastid = int(temp[-1][0])
-        if len(temp) == 1:
-            self.__lastid = int(temp[0][0])
     
     
     # добавление данных в базу
@@ -81,11 +93,6 @@ class DBHelper:
                                   (datestr,timestr,manyfloat))
         self.__CONN.commit()
         self.__lastid = self.__CURSOR.lastrowid
-    
-    
-    def readerall(self):
-        for row in self.__CURSOR.execute("SELECT rowid, * FROM manys"):
-            pprint(row)
     
     
     # закрытие базы
@@ -262,16 +269,16 @@ if __name__ == '__main__':
     dp = DataProcess()
     
     dbdata = userdata.get_all_data()
-    print('Get datas from DB:')
+    # print('Get datas from DB:')
     pprintln(dbdata)
     
-    datas = dp.get_datas(dbdata)
-    print('Get datas objects:')
-    println(datas)
+    # datas = dp.get_datas(dbdata)
+    # print('Get datas objects:')
+    # println(datas)
     
-    views = dp.get_viewdatas(datas)
-    print('Get viewdatas:')
-    pprintln(views)
+    # views = dp.get_viewdatas(datas)
+    # print('Get viewdatas:')
+    # pprintln(views)
     
     
     userdata.close()
