@@ -27,22 +27,12 @@ from dataclasses import dataclass
 
 @dataclass
 class Datas:
+    idd:int = -1
     mdate:object = datetime.date(dtm.now().year,
                                  dtm.now().month,
                                  dtm.now().day,
                             )
-    mtime:object = datetime.datetime.today().time()
-    idd:int = -1
     many:float = 0.0
-
-
-@dataclass
-class StringDatas:
-    idd:str = '-1'
-    mdate:str = '0000.00.00'
-    mtime:str = '00.00'
-    many:str = '0.0'
-
 
 
 
@@ -87,11 +77,12 @@ class DBHelper:
     
     
     # добавление данных в базу
-    # datestr - string
-    # manyfloat - float
-    def add_data(self, datestr, manyfloat):
+    # datetm - datetime
+    # manyfloat - float rub.kop
+    def add_data(self, datetm, manyfloat):
+        datestr = str(datetm.year)+'.'+str(datetm.month)+'.'+str(datetm.day)
         self.__CURSOR.execute("INSERT INTO manys\
-                                (date,time,many)\
+                                (date,many)\
                                  VALUES (?,?)", 
                                 (datestr,manyfloat))
         # сохранение данных
@@ -119,13 +110,29 @@ class DBHelper:
         self.get_ids()
     
     
+    # форматирует кортеж с данными из бд
+    # в список формата [idd:int, date:datetime.date, many:float]
+    def __formatdata(self, data):
+        idd = data[0]
+        tmp = list(map(int, data[1].split('.')))+[0,0,0]
+        mdate = datetime.date(tmp[0],tmp[1],tmp[2])
+        many = float(data[2])
+        return list([idd,mdate,many])
+    
+    
     # получение списка всех данных из базы
+    # возвращает список объектов Datas
     def get_all_data(self):
         tmpdata = self.__CURSOR.execute("SELECT * FROM manys ORDER BY id").fetchall()
         def foo(dt):
-            r = list(map(list,dt))
+            r = list(map(self.__formatdata,dt))
             return r
-        return  foo(tmpdata)
+        def foo2(dlst):
+            return Datas(dlst[0],dlst[1],dlst[2])
+        lst = foo(tmpdata)
+        lst.sort(key = lambda x: x[1])
+        lst = list(map(foo2, lst))
+        return lst
     
     
     # получение данных из одного столбца namecolumn. [id,date] или  [id,many]
@@ -161,11 +168,9 @@ class DBHelper:
         return d.strftime("%Y.%m.%d"),d.strftime("%H.%M.%S")
     
     
-    def update_data(self, ids, date=None,time=None,many=0.0):
+    def update_data(self, ids, date=None,many=0.0):
         if date == None:
             date = self.__now()[0]
-        if time == None:
-            time = self.__now()[1]
         self.__CURSOR.execute("UPDATE manys SET date=(?),\
                                                 time=(?),\
                                                 many=(?)\
@@ -200,7 +205,12 @@ if __name__ == '__main__':
     userdata = DBHelper()
     dp = DataProcess()
     
+    d = datetime.date(2020,2,10)
+    userdata.add_data(d,28.00)
     
+    # получаю данные из бд
+    alldata = userdata.get_all_data()
+    pprint(alldata)
     
     
     userdata.close()
