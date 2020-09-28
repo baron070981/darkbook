@@ -25,6 +25,8 @@ from dataclasses import dataclass
 
 '''
 
+
+
 @dataclass
 class Datas:
     idd:int = -1
@@ -35,7 +37,7 @@ class Datas:
     many:float = 0.0
 
 
-
+print()
 
 class DBHelper:
     # получить все данные сразу
@@ -55,7 +57,7 @@ class DBHelper:
 
     
     # создается база если ее нет
-    # если есть, получается последний id
+    # если есть и она не пустая, получается последний id
     def createdb(self):
         print("Create new database...")
         # создается бд если не существует
@@ -68,7 +70,7 @@ class DBHelper:
         self.__get_ids()
     
     
-    # получает последний id
+    # получает последний id и сохраняет в self.__lastid
     def __get_ids(self):
         rows = self.__CURSOR.execute("SELECT * FROM manys ORDER BY id")
         temp = rows.fetchall()
@@ -99,7 +101,7 @@ class DBHelper:
     # вывод последнего id
     @property
     def ids(self):
-        print(self.__lastid)
+        return self.__lastid
     
     
     # удаление данных по id
@@ -163,22 +165,33 @@ class DBHelper:
         return list(map(self.__dmmap, tmpdata))
     
     
+    # возвращает текущую дату.
+    # используется при ошибке даты
     def __now(self):
-        d = datetime.datetime.now()
-        return d.strftime("%Y.%m.%d"),d.strftime("%H.%M.%S")
+        dt = datetime.datetime.now()
+        return datetime.date(dt.year,dt.month,dt.day)
     
     
-    def update_data(self, ids, date=None,many=0.0):
-        if date == None:
-            date = self.__now()[0]
+    # принимает обект datetime.date
+    # возвращает строку с датой
+    def __toString(self, datedt):
+        return datetime.strftime('%Y.%m.%d')
+    
+    
+    # изменение данных в бд по id
+    def update_data(self, ids, datedt=None,many=0.0):
+        if datedt == None:
+            datedt = self.__now()[0]
+        datestr = self.__toString(datedt)
         self.__CURSOR.execute("UPDATE manys SET date=(?),\
                                                 time=(?),\
                                                 many=(?)\
-                                                WHERE id=(?)",(date,time,many,ids,))
+                                                WHERE id=(?)",(datestr,many,ids,))
         self.__CONN.commit()
 
 
-
+# класс обрабатывает данные
+# форматирует для Recycleview
 class DataProcess:
     def __init__(self):
         self.datas = list()
@@ -188,6 +201,26 @@ class DataProcess:
                               8:'август',9:'сентябрь',10:'октябрь',
                               11:'ноябрь',12:'декабрь',}
         self.periods = list()
+    
+    
+    def add_data(self, datas:Datas):
+        self.datas.append(datas)
+    
+    
+    
+    def toString(self, datas:Datas):
+        d = str(datas.mdate.year)+'.'+str(datas.mdate.month)+'.'+str(datas.mdate.day)
+        return d+'   '+str(datas.many)
+    
+    
+    def viewdata(self, dataslist:[Datas]):
+        views = list()
+        for data in dataslist:
+            s = self.toString(data)
+            idd = data.idd
+            views.append({'text':s,'integer':idd})
+        return views
+    
     
     
     
@@ -211,7 +244,8 @@ if __name__ == '__main__':
     # получаю данные из бд
     alldata = userdata.get_all_data()
     pprint(alldata)
-    
+    views = dp.viewdata(alldata)
+    pprint(views)
     
     userdata.close()
     
