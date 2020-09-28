@@ -85,8 +85,7 @@ class PeriodsView(RecycleView):
     def __init__(self,**kwargs):
         super(PeriodsView,self).__init__(**kwargs)
         
-        datas = dp.get_datas(alldata)
-        data = dp.get_viewdatas(datas)
+        data = dp.viewdata(alldata)
         if data == None or len(data) == 0:
             self.data = []
         else:
