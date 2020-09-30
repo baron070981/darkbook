@@ -18,6 +18,7 @@ from kivy.config import Config
 import os
 import configdata as conf
 import dataprocess
+from pprint import pprint
 
 
 Config.set('graphics','width','302')
@@ -74,7 +75,11 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         self.selected = is_selected
         if is_selected:
             print("selection changed to {0}".format(rv.data[index]))
-            print(self.index)
+            print(rv.data[index].get('text').split('/'))
+            vals = rv.data[index].get('text').split('/')
+            data = dp.viewmonth(vals[0].strip(),int(vals[1].strip()))
+            pprint(data)
+            rv.data = data
         else:
             print("selection removed for {0}".format(rv.data[index]))
 
@@ -85,7 +90,8 @@ class PeriodsView(RecycleView):
     def __init__(self,**kwargs):
         super(PeriodsView,self).__init__(**kwargs)
         
-        data = dp.viewdata(alldata)
+        allperiods = dp.periods(alldata)
+        data = dp.viewmonthsyear()
         if data == None or len(data) == 0:
             self.data = []
         else:
