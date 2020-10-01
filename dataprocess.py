@@ -234,8 +234,9 @@ class DataProcess:
             
         for data in dataslist:
             self.allperiods[data.mdate.year][data.mdate.month] = dict({data.mdate.day:list()})
-        
+        i = 0
         for data in dataslist:
+            print(i)
             self.allperiods[data.mdate.year][data.mdate.month][data.mdate.day].append([data.many,data.idd])
         return self.allperiods
     
@@ -273,8 +274,9 @@ if __name__ == '__main__':
     userdata = DBHelper()
     dp = DataProcess()
     
-    d = datetime.date(2020,2,10)
-    userdata.add_data(d,28.00)
+    # for i in range(30):
+        # d = datetime.date(rint(2017,2020),rint(1,12),rint(1,28))
+        # userdata.add_data(d,rint(700,10000))
     
     # получаю данные из бд
     alldata = userdata.get_all_data()
