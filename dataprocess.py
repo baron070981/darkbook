@@ -203,60 +203,59 @@ class DataProcess:
                             'май':5,'июнь':6,'июль':7,'август':8,
                             'сентябрь':9,'октябрь':10,'ноябрь':11,'декабрь':12,}
         self.allperiods = dict()
+
+
     
-    
-    def add_data(self, datas:Datas):
-        self.datas.append(datas)
-    
-    
-    
-    def toString(self, datas:Datas):
+    def __toString(self, datas:Datas):
         d = str(datas.mdate.year)+'.'+str(datas.mdate.month)+'.'+str(datas.mdate.day)
         return d+'   '+str(datas.many)
     
     
     def viewdates(self, dataslist:[Datas]):
         views = list()
-        for data in dataslist:
-            s = self.toString(data)
-            idd = data.idd
-            views.append({'text':s,'integer':idd})
+        
         return views
     
     
     def periods(self, dataslist:[Datas]):
-        self.allperiods = dict()
-        for data in dataslist:
-            self.allperiods[data.mdate.year] = dict()
+        allperiods = dict()
         
-        for data in dataslist:
-            self.allperiods[data.mdate.year] = dict({data.mdate.month:dict()})
-            
-        for data in dataslist:
-            self.allperiods[data.mdate.year][data.mdate.month] = dict({data.mdate.day:list()})
-        i = 0
-        for data in dataslist:
-            print(i)
-            self.allperiods[data.mdate.year][data.mdate.month][data.mdate.day].append([data.many,data.idd])
-        return self.allperiods
+        
+        return allperiods
     
     
-    def viewmonthsyear(self):
+    def viewmonthsyear(self,datas:[Datas]):
         views = list()
-        for year in self.allperiods:
-            for month in self.allperiods[year]:
-                views.append({'text':self.__monthname[month]+' / '+str(year)})
+        d = dict()
+        for y in datas:
+            d[y.mdate.year] = dict()
+        
+        for y in d:
+            for m in datas:
+                d[m.mdate.year][m.mdate.month] = list([0.0])
+        
+        for dt in datas:
+            d[dt.mdate.year][dt.mdate.month][0]+=dt.many
+        
+        # for data in d:
+            # for mnt,val in d[data].items():
+                # print(mnt,val)
+        
+        for y,m in d.items():
+            for k,mn in m.items():
+                s = self.__monthname[k]+' / '+str(y)+' / '+str(mn[0])
+                views.append({'text':s})
+        
+        pprint(d)
         return views
     
     
-    def viewmonth(self, monthname, yearstr):
+    def viewmonthinfo(self, monthname, yearstr):
         views = list()
-        year = yearstr
-        month = self.__monthnums
-        per = self.allperiods[year][self.__monthnums[monthname]]
-        for data in per:
-            for d in per[data]:
-                views.append({'text':str(d[0]),'integer':d[1]})
+        
+        
+        
+        
         return views
     
     
@@ -279,12 +278,11 @@ if __name__ == '__main__':
         # userdata.add_data(d,rint(700,10000))
     
     # получаю данные из бд
-    alldata = userdata.get_all_data()
+    alldata = userdata.get_all_data()[:11]
     pprint(alldata)
-    dp.periods(alldata)
+    per = dp.viewmonthsyear(alldata)
+    pprint(per)
     
-    pprint(dp.viewmonthsyear())
-    pprint(dp.viewmonth('февраль',2020))
     
     
     userdata.close()
