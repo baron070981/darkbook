@@ -2,6 +2,8 @@
 <SelectableLabel>:
     #size_hint:(1,0.1)
     color:.1,1,.3,1
+    padding:10,10
+    spacing:10
     canvas.before:
         Color:
             rgba: (.1, .1, .1, .6) if self.selected else (0,0,0,1)
@@ -18,7 +20,13 @@
         padding:10, 10
         #space_x: self.size[0]/3
   
-        SelectableRecycleBoxLayout: 
+        SelectableRecycleBoxLayout:
+            canvas.before:
+                Color:
+                    rgba: (.6, .1, .1, .9)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
             color:(0, 0.7, 0.4, 0.8) 
             default_size: None, dp(56) 
             size_hint:(1,0.03)
@@ -28,7 +36,8 @@
             size_hint_y: None
             height: self.minimum_height 
             orientation: 'vertical'
-
+            on_touch_down:
+                app.root.current = 'MonthData'
 
 
 
@@ -42,6 +51,12 @@
         PeriodsView:
         
         BoxLayout:
+            canvas.before:
+                Color:
+                    rgba: (.6, .1, .1, .9)
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
             orientation:'horizontal'
             spacing:3
             padding:3
@@ -55,11 +70,7 @@
                 text:'settings'
             Button:
                 text:'full'
-    
-    
-    
-    
-    
+
     
     
     
