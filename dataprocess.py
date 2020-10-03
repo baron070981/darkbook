@@ -203,6 +203,7 @@ class DataProcess:
                             'май':5,'июнь':6,'июль':7,'август':8,
                             'сентябрь':9,'октябрь':10,'ноябрь':11,'декабрь':12,}
         self.allperiods = dict()
+        self.monthintent = ['2020', 'январь']
 
 
     
@@ -217,11 +218,19 @@ class DataProcess:
         return views
     
     
-    def periods(self, dataslist:[Datas]):
-        allperiods = dict()
+    def periods(self, datas:[Datas]):
+        d = dict()
+        for y in datas:
+            d[y.mdate.year] = dict()
         
+        for y in d:
+            for m in datas:
+                d[m.mdate.year][m.mdate.month] = list([0.0])
         
-        return allperiods
+        for dt in datas:
+            d[dt.mdate.year][dt.mdate.month][0]+=dt.many
+        
+        return d
     
     
     def viewmonthsyear(self,datas:[Datas]):
@@ -237,10 +246,6 @@ class DataProcess:
         for dt in datas:
             d[dt.mdate.year][dt.mdate.month][0]+=dt.many
         
-        # for data in d:
-            # for mnt,val in d[data].items():
-                # print(mnt,val)
-        
         for y,m in d.items():
             for k,mn in m.items():
                 s = self.__monthname[k]+' / '+str(y)+' / '+str(mn[0])
@@ -250,14 +255,36 @@ class DataProcess:
         return views
     
     
-    def viewmonthinfo(self, monthname, yearstr):
+    def viewmonthinfo(self, datas:[Datas],yearstr, monthname):
+        print('Call viewmonthnfo...')
+        year = int(yearstr)
+        month = self.__monthnums[monthname]
+        
         views = list()
+        tmplist = list()
+        d = dict()
+        for y in datas:
+            if int(y.mdate.year) == year:
+                d[y.mdate.year] = dict()
         
+        for y in d:
+            for m in datas:
+                if m.mdate.year in d and m.mdate.month == month:
+                    d[m.mdate.year][m.mdate.month] = list([])
         
-        
+        for dt in datas:
+            if dt.mdate.year in d and dt.mdate.month in d[dt.mdate.year]:
+                s = str(dt.mdate.day)+' - '+str(dt.many)
+                views.append({'text':s,'integer':dt.idd})
         
         return views
     
+
+class ContentIntent:
+    def __init__(self):
+        pass
+
+
     
 def println(string):
     print(string)
@@ -283,6 +310,9 @@ if __name__ == '__main__':
     per = dp.viewmonthsyear(alldata)
     pprint(per)
     
+    print()
+    per2 = dp.viewmonthinfo(alldata,2018,'февраль')
+    pprint(per2)
     
     
     userdata.close()

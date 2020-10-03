@@ -78,7 +78,8 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         self.selected = is_selected
         if is_selected:
             print("selection changed to {0}".format(rv.data[index]))
-            
+            n = rv.data[index]['text'].split('/')
+            dp.monthintent = [n[1].strip(),n[0].strip()]
         else:
             print("selection removed for {0}".format(rv.data[index]))
 
@@ -87,7 +88,6 @@ class PeriodsView(RecycleView):
     def __init__(self,**kwargs):
         super(PeriodsView,self).__init__(**kwargs)
         
-        #allperiods = dp.periods(alldata)
         data = dp.viewmonthsyear(alldata)
         if data == None or len(data) == 0:
             self.data = []
@@ -125,12 +125,17 @@ class SelectableLabel2(RecycleDataViewBehavior, Label):
             print("selection changed to {0}".format(rv.data[index]))
         else:
             print("selection removed for {0}".format(rv.data[index]))
+    
 
 
 class MonthView(RecycleView):
     def __init__(self,**kwargs):
         super(MonthView,self).__init__(**kwargs)
-        self.data = [ { 'text':'month view' } ]
+        #self.data = list()
+        self.data = dp.viewmonthinfo(alldata, dp.monthintent[0],dp.monthintent[1])
+    
+    def on_chnaged(self,**kwargs):
+        super(MonthView,self).on_data_changed(**kwargs)
 
 
 
