@@ -44,6 +44,12 @@ class DataListScreen(Screen):
     
     def into_create_data(self):
         print('NEW')
+    
+    
+    def into_dataview(self):
+        print('New screen')
+        chg = self.manager.monthdatascreen
+        chg.upd()
 
 
 class MonthDataListScreen(Screen):
@@ -95,8 +101,8 @@ class PeriodsView(RecycleView):
             self.data = data
     
     
-    def into_dataview(self):
-        print("Data view...")
+    # def into_dataview(self):
+        # pass
 
 
 class SelectableLabel2(RecycleDataViewBehavior, Label):
@@ -134,13 +140,21 @@ class MonthView(RecycleView):
         #self.data = list()
         self.data = dp.viewmonthinfo(alldata, dp.monthintent[0],dp.monthintent[1])
     
-    def on_chnaged(self,**kwargs):
-        super(MonthView,self).on_data_changed(**kwargs)
+    
+    def upd(self):
+        print('New screen')
+    
+    
+    
 
 
 
 class ScreenManag(ScreenManager):
-    pass
+    input_screen = ObjectProperty(None)
+    datalistscreen = ObjectProperty(None)
+    monthdatascreen = ObjectProperty(None)
+
+
 
 
 class BlackbuchApp(App):

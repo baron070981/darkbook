@@ -4,9 +4,22 @@
 #: include monthdatalist.kv
 
 <ScreenManag>:
+    id:screenmanag
+    input_screen:input_screen
+    datalistscreen:datalistscreen
+    monthdatascreen:monthdatascreen
+    
     InputScreen:
+        id:input_screen
+        manager:screenmanag
+        
     DataListScreen:
+        id:datalistscreen
+        manager:screenmanag
+        
     MonthDataListScreen:
+        id:monthdatascreen
+        manager:screenmanag
 
 
 
