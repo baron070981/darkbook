@@ -37,8 +37,6 @@ class Datas:
     many:float = 0.0
 
 
-print()
-
 class DBHelper:
     # получить все данные сразу
     # получить даты
@@ -202,7 +200,7 @@ class DataProcess:
         self.__monthnums = {'январь':1,'февраль':2,'март':3,'апрель':4,
                             'май':5,'июнь':6,'июль':7,'август':8,
                             'сентябрь':9,'октябрь':10,'ноябрь':11,'декабрь':12,}
-        self.allperiods = dict()
+        self.MONTHSYERS = list()
         self.monthintent = ['2020', 'январь']
 
 
@@ -250,13 +248,11 @@ class DataProcess:
             for k,mn in m.items():
                 s = self.__monthname[k]+' / '+str(y)+' / '+str(mn[0])
                 views.append({'text':s})
-        
-        pprint(d)
+        self.MONTSYEARS = views.copy()
         return views
     
     
     def viewmonthinfo(self, datas:[Datas],yearstr, monthname):
-        print('Call viewmonthnfo...')
         year = int(yearstr)
         month = self.__monthnums[monthname]
         
@@ -300,7 +296,7 @@ if __name__ == '__main__':
     userdata = DBHelper()
     dp = DataProcess()
     
-    # for i in range(30):
+    # for i in range(1000):
         # d = datetime.date(rint(2017,2020),rint(1,12),rint(1,28))
         # userdata.add_data(d,rint(700,10000))
     

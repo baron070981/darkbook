@@ -12,6 +12,7 @@
 
 
 <MonthView>:
+    id:monthview
     RecycleView:
         data: root.data
         viewclass: 'SelectableLabel'
@@ -20,7 +21,7 @@
         padding:10, 10
         #space_x: self.size[0]/3
   
-        SelectableRecycleBoxLayout: 
+        SelectableRecycleBoxLayout2: 
             color:(0, 0.7, 0.4, 0.8) 
             default_size: None, dp(56) 
             size_hint:(1,0.03)
@@ -35,26 +36,27 @@
     
 <MonthDataListScreen>:
     name:'MonthData'
-    
+    id:monthdatascreen
+    monthview:monthview
     BoxLayout:
         padding:2
         spacing:2
         orientation:'vertical'
         MonthView:
-        
+            id:monthview
         BoxLayout:
             orientation:'horizontal'
             spacing:3
             padding:3
             size_hint:(1,0.1)
+            Label:
+            Label:
+            
             Button:
-                id:newdatabtn
-                text:'new'
-            Button:
-                text:'settings'
-            Button:
-                text:'full'
-    
+                id:backbtn
+                text:'back'
+                on_press:
+                    app.root.current = 'datalist'
     
     
     

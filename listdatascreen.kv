@@ -12,7 +12,7 @@
             size: self.size
 
 <PeriodsView>:
-    
+    id:periodsview
     RecycleView:
         data: root.data
         viewclass: 'SelectableLabel'
@@ -37,10 +37,10 @@
             size_hint_y: None
             height: self.minimum_height 
             orientation: 'vertical'
-            on_touch_down:
+            on_touch_up:
                 app.root.current = 'MonthData'
-                root.into_dataview()
-
+            on_touch_down:
+                app.root.monthdatascreen.monthview.foo()
 
 
 <DataListScreen>:
@@ -60,10 +60,12 @@
                 Rectangle:
                     pos: self.pos
                     size: self.size
+
             orientation:'horizontal'
             spacing:3
             padding:3
             size_hint:(1,0.1)
+
             Button:
                 id:newdatabtn
                 text:'new'

@@ -46,14 +46,13 @@ class DataListScreen(Screen):
         print('NEW')
     
     
-    def into_dataview(self):
-        print('New screen')
-        chg = self.manager.monthdatascreen
-        chg.upd()
-
 
 class MonthDataListScreen(Screen):
+    #monthview = ObjectProperty(None)
+    
     pass
+    
+
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                                  RecycleBoxLayout):
@@ -66,11 +65,13 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     selected = BooleanProperty(False)
     selectable = BooleanProperty(True)
 
+
     def refresh_view_attrs(self, rv, index, data):
         ''' Catch and handle the view changes '''
         self.index = index
         return super(SelectableLabel, self).refresh_view_attrs(
             rv, index, data)
+
 
     def on_touch_down(self, touch):
         ''' Add selection on touch down '''
@@ -79,15 +80,21 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         if self.collide_point(*touch.pos) and self.selectable:
             return self.parent.select_with_touch(self.index, touch)
 
+
     def apply_selection(self, rv, index, is_selected):
         ''' Respond to the selection of items in the view. '''
         self.selected = is_selected
         if is_selected:
-            print("selection changed to {0}".format(rv.data[index]))
-            n = rv.data[index]['text'].split('/')
-            dp.monthintent = [n[1].strip(),n[0].strip()]
+            if App.get_running_app().root.current == 'datalist':
+                print("selection changed to {0}".format(rv.data[index]), ' in datalist screen.' )
+                n = rv.data[index]['text'].split('/')
+                print(n, ' in datalist screen.' )
+                dp.monthintent = [n[1].strip(),n[0].strip()]
+                print('Monthintent in :', dp.monthintent, ' in datalist screen.' )
+            elif App.get_running_app().root.current == 'MonthData':
+                print('Apply_selection in MonthView screen...')
         else:
-            print("selection removed for {0}".format(rv.data[index]))
+            print("selection removed for {0}".format(rv.data[index]), ' in apply_selection.')
 
 
 class PeriodsView(RecycleView):
@@ -100,9 +107,10 @@ class PeriodsView(RecycleView):
         else:
             self.data = data
     
-    
-    # def into_dataview(self):
-        # pass
+
+class SelectableRecycleBoxLayout2(FocusBehavior, LayoutSelectionBehavior,
+                                 RecycleBoxLayout):
+    ''' Adds selection and focus behaviour to the view. '''
 
 
 class SelectableLabel2(RecycleDataViewBehavior, Label):
@@ -114,8 +122,10 @@ class SelectableLabel2(RecycleDataViewBehavior, Label):
     def refresh_view_attrs(self, rv, index, data):
         ''' Catch and handle the view changes '''
         self.index = index
+        print('Call Refresh 2...')
         return super(SelectableLabel2, self).refresh_view_attrs(
             rv, index, data)
+    
 
     def on_touch_down(self, touch):
         ''' Add selection on touch down '''
@@ -129,20 +139,28 @@ class SelectableLabel2(RecycleDataViewBehavior, Label):
         self.selected = is_selected
         if is_selected:
             print("selection changed to {0}".format(rv.data[index]))
+            print('On_touch_down 2...')
+            #self.data2 = list()
         else:
             print("selection removed for {0}".format(rv.data[index]))
     
 
 
 class MonthView(RecycleView):
+    monthview = ObjectProperty(None)
     def __init__(self,**kwargs):
         super(MonthView,self).__init__(**kwargs)
         #self.data = list()
+        print('Monthintent init: ', dp.monthintent)
+        #self.data = dp.viewmonthinfo(alldata, dp.monthintent[0],dp.monthintent[1])
+        #self.data = [{'text':'data testing 1'}]
+    
+    def foo(self):
+        print('Call from monthview...')
+        print('Monthintent in foo: ', dp.monthintent)
         self.data = dp.viewmonthinfo(alldata, dp.monthintent[0],dp.monthintent[1])
+        #self.data = [{'text':'data testing 2'}]
     
-    
-    def upd(self):
-        print('New screen')
     
     
     
