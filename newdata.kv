@@ -1,0 +1,110 @@
+#:import MDTextField kivymd.uix.textfield
+
+
+
+
+<MyFloatLayout@FloatLayout>:
+    padding:10
+    spacing:5
+
+
+<NewData>:
+    name:'newdata'
+    id:newdataid
+    canvas: 
+        Color: 
+            rgba: (0.1,0.1,0.1,1)
+        Rectangle: 
+            size: self.size 
+            pos: self.pos 
+    
+    FloatLayout:
+        orientation:'vertical'
+        BoxLayout:
+            size_hint:(0.9,0.3)
+            pos_hint:{'x':0.05,'y':0.70}
+            orientation:'vertical'
+            spacing:9
+            BoxLayout:
+                padding:2
+                spacing:2
+                size_hint:(1,0.2)
+                orientation:'vertical'
+                Label:
+                    size_hint:(0.15,0.29)
+                    pos_hint:{'x':0.40,'y':0.2}
+                    text:'год'
+                    font_size:"14sp"
+                MDTextFieldRect:
+                    id:input_year
+                    size_hint:(1,0.5)
+                    multiline:False
+                    font_size: "14sp"
+                    multiline:False
+                    color:1,.3,.3,.5
+                    foreground_color:(1,.1,.1,1)
+                    halign:"center"
+                    background_color:(.1,.1,.1,1)
+                    border:(2,2,2,2)
+                
+            BoxLayout:
+                padding:2
+                spacing:2
+                size_hint:(1,0.2)
+                orientation:'vertical'
+                Label:
+                    size_hint:(0.15,0.29)
+                    pos_hint:{'x':0.40,'y':0.2}
+                    text:'месяц'
+                    font_size:"14sp"
+                MDTextFieldRect:
+                    id:input_year
+                    size_hint:(1,0.5)
+                    multiline:False
+                    font_size: "14sp"
+                    multiline:False
+                    color:1,.3,.3,.5
+                    foreground_color:(1,.1,.1,1)
+                    halign:"center"
+                    background_color:(.1,.1,.1,1)
+                    border:(2,2,2,2)
+
+            BoxLayout:
+                padding:2
+                spacing:2
+                size_hint:(1,0.2)
+                orientation:'vertical'
+                Label:
+                    size_hint:(0.15,0.29)
+                    pos_hint:{'x':0.40,'y':0.2}
+                    text:'число'
+                    font_size:"14sp"
+                MDTextFieldRect:
+                    id:input_year
+                    size_hint:(1,0.5)
+                    multiline:False
+                    font_size: "14sp"
+                    multiline:False
+                    color:1,.3,.3,.5
+                    foreground_color:(1,.1,.1,1)
+                    halign:"center"
+                    background_color:(.1,.1,.1,1)
+                    border:(2,2,2,2)
+            
+        Button:
+            size_hint:(0.17,0.06)
+            pos_hint:{'x':0.75,'y':0.61}
+            text:'save'
+            on_press:
+                app.root.current = 'datalist'
+
+
+
+
+
+
+
+
+
+
+
