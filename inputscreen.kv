@@ -1,4 +1,7 @@
 
+#: import MDLabel kivymd.uix.label 
+#:import MDTextField kivymd.uix.textfield
+
 
 <InputScreen>:
     name:"input screen"
@@ -8,7 +11,13 @@
         orientation: 'vertical'
         padding: 2
         spacing: 3
-        
+        canvas:
+            Color:
+                rgba:.04,.04,.04,1
+            Rectangle:
+                pos:self.pos
+                size:self.size
+
         FloatLayout:
             #padding:2
             size_hint:(1,0.7)
@@ -18,13 +27,15 @@
                 Rectangle:
                     pos:self.pos
                     size:self.size
-            Label:
+            MDLabel:
                 id:winfo
-                size_hint:(0.7,0.1)
-                pos_hint:{'y':0,'x':0.15}
+                halign:'center'
+                size_hint:(1,0.17)
+                pos_hint:{'y':0.1,'x':0}
                 text:root.welcomeinfo
                 color:1,.1,.1,1
                 font_size:'12sp'
+                font_style:'Subtitle2'
         
         BoxLayout:
             orientation:'horizontal'
@@ -35,7 +46,7 @@
                 Rectangle:
                     pos:self.pos
                     size:self.size
-            TextInput:
+            MDTextFieldRect:
                 id:user_input
                 size_hint:(0.7,0.9)
                 pos_hint:{'y':0.1,'x':0.1}

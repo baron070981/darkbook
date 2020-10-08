@@ -15,7 +15,7 @@
     id:monthview
     RecycleView:
         data: root.data
-        viewclass: 'SelectableLabel'
+        viewclass: 'SelectableLabel2'
         orientation: "vertical"
         spacing: 40
         padding:10, 10
@@ -39,6 +39,12 @@
     id:monthdatascreen
     monthview:monthview
     BoxLayout:
+        canvas.before:
+            Color:
+                rgba: (.1, .1, .1, 1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
         padding:2
         spacing:2
         orientation:'vertical'

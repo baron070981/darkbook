@@ -10,6 +10,8 @@
         Rectangle:
             pos: self.pos
             size: self.size
+    on_touch_down:
+        app.root.current = 'MonthData'
 
 <PeriodsView>:
     id:periodsview
@@ -37,10 +39,8 @@
             size_hint_y: None
             height: self.minimum_height 
             orientation: 'vertical'
-            on_touch_up:
-                app.root.current = 'MonthData'
-            on_touch_down:
-                app.root.monthdatascreen.monthview.foo()
+            
+            
 
 
 <DataListScreen>:
@@ -51,6 +51,12 @@
         padding:2
         spacing:2
         orientation:'vertical'
+        canvas: 
+            Color: 
+                rgba: (0.1,0.1,0.1,1)
+            Rectangle: 
+                size: self.size 
+                pos: self.pos 
         PeriodsView:
         
         BoxLayout:
@@ -71,6 +77,7 @@
                 text:'new'
                 on_press:
                     root.into_create_data()
+                    app.root.current = 'newdata'
             Button:
                 text:'settings'
             Button:
