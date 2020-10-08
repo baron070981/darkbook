@@ -2,12 +2,14 @@
 #: include inputscreen.kv
 #: include listdatascreen.kv
 #: include monthdatalist.kv
+#: include newdata.kv
 
 <ScreenManag>:
     id:screenmanag
     input_screen:input_screen
     datalistscreen:datalistscreen
     monthdatascreen:monthdatascreen
+    newdataid:newdataid
     
     InputScreen:
         id:input_screen
@@ -20,7 +22,10 @@
     MonthDataListScreen:
         id:monthdatascreen
         manager:screenmanag
-        
+    
+    NewData:
+        id:newdataid
+        manager:screenmanag
 
 
 
