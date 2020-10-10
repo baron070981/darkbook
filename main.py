@@ -5,6 +5,7 @@ Config.set('graphics','width','302')
 Config.set('graphics','height','575')
 
 from kivymd.app import MDApp
+from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.boxlayout import BoxLayout
@@ -189,8 +190,10 @@ class BlackbuchApp(MDApp):
     def __init__(self):
         super(BlackbuchApp,self).__init__()
         
+    
     def build(self):
-        self.theme_cls.primary_palette = "Blue" 
+        self.theme_cls.primary_palette =  "Red"
+        self.theme_cls.theme_style = "Dark" 
         return ScreenManag()
 
 
