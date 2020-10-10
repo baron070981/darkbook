@@ -25,6 +25,9 @@ import os
 import configdata as conf
 import dataprocess
 from pprint import pprint
+import datainput
+
+
 
 from kivymd.uix.textfield import MDTextField
 from kivymd.uix.label import MDLabel
@@ -60,7 +63,20 @@ class MonthDataListScreen(Screen):
 
 
 class NewData(Screen):
-    pass
+    
+    def get_text(self):
+        di = datainput.DataInput()
+        print('New data get text...')
+        year = App.get_running_app().root.newdataid.input_year.text
+        month = App.get_running_app().root.newdataid.input_month.text
+        day = App.get_running_app().root.newdataid.input_day.text
+        many = App.get_running_app().root.newdataid.input_many.text
+        res,state = di.get_datas(year,month,day,many)
+        if not state:
+            return
+        dbh.add_data(res.mdate, res.many)
+        print(res)
+        
 
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,

@@ -11,6 +11,10 @@
 <NewData>:
     name:'newdata'
     id:newdataid
+    input_year:input_year
+    input_month:input_month
+    input_day:input_day
+    input_many:input_many
     canvas: 
         Color: 
             rgba: (0.01,0.01,0.01,1)
@@ -58,7 +62,7 @@
                     text:'месяц'
                     font_size:"14sp"
                 MDTextFieldRect:
-                    id:input_year
+                    id:input_month
                     size_hint:(1,0.5)
                     multiline:False
                     font_size: "14sp"
@@ -80,7 +84,7 @@
                     text:'число'
                     font_size:"14sp"
                 MDTextFieldRect:
-                    id:input_year
+                    id:input_day
                     size_hint:(1,0.5)
                     multiline:False
                     font_size: "14sp"
@@ -102,7 +106,7 @@
                     text:'сумма'
                     font_size:"14sp"
                 MDTextFieldRect:
-                    id:input_year
+                    id:input_many
                     size_hint:(1,0.5)
                     multiline:False
                     font_size: "14sp"
@@ -119,7 +123,7 @@
             pos_hint:{'x':0.55,'y':0.51}
             text:'save'
             on_press:
-                print('Press')
+                root.get_text()
             on_release:
                 app.root.current = 'datalist'
 
