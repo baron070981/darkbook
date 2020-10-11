@@ -41,7 +41,7 @@
     BoxLayout:
         canvas.before:
             Color:
-                rgba: (.1, .1, .1, 1)
+                rgba: (.01, .01, .016, 1)
             Rectangle:
                 pos: self.pos
                 size: self.size
@@ -54,11 +54,12 @@
             orientation:'horizontal'
             spacing:3
             padding:3
-            size_hint:(1,0.1)
+            size_hint:(1,0.08)
             Label:
             Label:
             
             Button:
+                size_hint:(0.5,1)
                 id:backbtn
                 text:'back'
                 on_press:

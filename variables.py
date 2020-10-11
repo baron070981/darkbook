@@ -14,7 +14,7 @@ class Datas:
     many:float = 0.0
 
 
-
+alldataDB = None
 
 
 

@@ -1,5 +1,6 @@
 #:import MDTextField kivymd.uix.textfield
 #:import MDRoundFlatButton kivymd.uix.button 
+#:import MDRaisedButton kivymd.uix.button
 
 
 
@@ -126,7 +127,15 @@
                 root.get_text()
             on_release:
                 app.root.current = 'datalist'
-
+        
+        #MDRaisedButton:
+        MDRoundFlatButton:
+            size_hint:(0.3,0.06)
+            pos_hint:{'x':0.7,'y':0.01}
+            text:'back'
+            #md_bg_color:0,0,0,1
+            on_press:
+                app.root.current = 'datalist'
 
 
 
