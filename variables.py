@@ -1,7 +1,18 @@
-
 from dataclasses import dataclass
-import datetime
 from datetime import datetime as dtm
+import datetime
+from kivymd.uix.dialog import MDDialog
+
+
+dbpassw = None
+dbdata = None
+
+fakedata = [{'text':'data 1'},{'text':'data 1'},{'text':'data 1'},
+            {'text':'data 1'},{'text':'data 1'},{'text':'data 1'},
+            {'text':'data 1'},{'text':'data 1'},{'text':'data 1'},
+            {'text':'data 1'},{'text':'data 1'},{'text':'data 1'},
+            {'text':'data 1'},{'text':'data 1'},{'text':'data 1'},
+            ]
 
 
 @dataclass
@@ -11,14 +22,18 @@ class Datas:
                                  dtm.now().month,
                                  dtm.now().day,
                             )
-    many:float = 0.0
-
+    money:float = 0.0
 
 alldataDB = None
+month = ''
+year = ''
 
+idd = 0
 
+dbase = None
+dp = None
 
-
-
+TOUCH = False
+dialog = None
 
 
