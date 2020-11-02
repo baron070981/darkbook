@@ -1,0 +1,70 @@
+
+<SelectableLabel>:
+    color:.1,1,.3,1
+    canvas.before:
+        Color:
+            rgba: (.01, .01, .01, .6) if self.selected else (0,0,0,1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    on_touch_down:
+        app.root.current = 'period'
+
+
+
+<GeneralDataView>:
+    id:generaldataview
+    canvas.before:
+        Color:
+            rgba: (.1, .1, .1, .6)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    RecycleView:
+        data: root.data
+        viewclass: 'SelectableLabel'
+        orientation: "vertical"
+  
+        SelectableRecycleBoxLayout:
+            padding:2
+            spacing:2
+            default_size: None, dp(46) 
+            #size_hint:(1,0.03)
+            
+            default_size_hint: 1, None 
+            size_hint_y: None
+            height: self.minimum_height 
+            orientation: 'vertical'
+
+<GeneralDataScreen>:
+    name:'generaldata'
+    id:generaldata
+    generaldataview:generaldataview
+    BoxLayout:
+        padding:2
+        spacing:2
+        orientation:'vertical'
+        canvas: 
+            Color: 
+                rgba: (0.1,0.1,0.1,1)
+            Rectangle: 
+                size: self.size 
+                pos: self.pos 
+        GeneralDataView:
+            id:generaldataview
+    MDFloatingActionButtonSpeedDial:
+        id:multibtn
+        data: root.data1
+        rotation_root_button: True
+        bg_color_root_button:(0,0,1,1)
+        hint_animation:True
+        right_pad:True
+        icon:'images/menuicon.png'
+
+        callback:root.callback
+            
+            
+            
+
+
+

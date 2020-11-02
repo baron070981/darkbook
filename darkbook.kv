@@ -1,0 +1,31 @@
+
+#: include loginscreen.kv
+#: include generaldatascreen.kv
+#: include singleperioddatascreen.kv
+#: include adddatascreen.kv
+
+
+<ScreenManag>:
+    id:screenmanag
+    #inputpassword:inputpassword
+    generaldata:generaldata
+    
+    LoginScreen:
+        id:inputpassword
+        manager:screenmanag
+    
+    GeneralDataScreen:
+        id:generaldata
+        manager:screenmanag
+    
+    SinglePeriodDataScreen:
+        id:period
+        manager:screenmanag
+    
+    AddingNewData:
+        id:newdataid
+        manager:screenmanag
+    
+
+
+

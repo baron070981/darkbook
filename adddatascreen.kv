@@ -1,0 +1,152 @@
+#:import MDTextField kivymd.uix.textfield
+#:import MDRoundFlatButton kivymd.uix.button 
+#:import MDRaisedButton kivymd.uix.button
+
+
+
+<MyFloatLayout@FloatLayout>:
+    padding:10
+    spacing:5
+
+
+<AddingNewData>:
+    name:'newdata'
+    id:newdataid
+    input_year:input_year
+    input_month:input_month
+    input_day:input_day
+    input_many:input_many
+    canvas: 
+        Color: 
+            rgba: (0.01,0.01,0.01,1)
+        Rectangle: 
+            size: self.size 
+            pos: self.pos 
+    
+    FloatLayout:
+        orientation:'vertical'
+        BoxLayout:
+            size_hint:(0.9,0.4)
+            pos_hint:{'x':0.05,'y':0.60}
+            orientation:'vertical'
+            spacing:9
+            BoxLayout:
+                padding:2
+                spacing:2
+                size_hint:(1,0.2)
+                orientation:'vertical'
+                Label:
+                    size_hint:(0.15,0.29)
+                    pos_hint:{'x':0.40,'y':0.2}
+                    text:'год'
+                    font_size:"14sp"
+                MDTextFieldRect:
+                    id:input_year
+                    size_hint:(1,0.5)
+                    multiline:False
+                    font_size: "14sp"
+                    multiline:False
+                    color:1,.3,.3,.5
+                    foreground_color:(.1,.1,1,1)
+                    halign:"center"
+                    background_color:(.1,.1,.1,1)
+                    border:(2,2,2,2)
+                    text:root.yeartext
+                
+            BoxLayout:
+                padding:2
+                spacing:2
+                size_hint:(1,0.2)
+                orientation:'vertical'
+                Label:
+                    size_hint:(0.15,0.29)
+                    pos_hint:{'x':0.40,'y':0.2}
+                    text:'месяц'
+                    font_size:"14sp"
+                MDTextFieldRect:
+                    id:input_month
+                    size_hint:(1,0.5)
+                    multiline:False
+                    font_size: "14sp"
+                    multiline:False
+                    color:1,.3,.3,.5
+                    foreground_color:(.1,.1,1,1)
+                    halign:"center"
+                    background_color:(.1,.1,.1,1)
+                    border:(2,2,2,2)
+                    text:root.monthtext
+
+            BoxLayout:
+                padding:2
+                spacing:2
+                size_hint:(1,0.2)
+                orientation:'vertical'
+                Label:
+                    size_hint:(0.15,0.29)
+                    pos_hint:{'x':0.40,'y':0.2}
+                    text:'число'
+                    font_size:"14sp"
+                MDTextFieldRect:
+                    id:input_day
+                    size_hint:(1,0.5)
+                    multiline:False
+                    font_size: "14sp"
+                    multiline:False
+                    color:1,.3,.3,.5
+                    foreground_color:(.1,.1,1,1)
+                    halign:"center"
+                    background_color:(.1,.1,.1,1)
+                    border:(2,2,2,2)
+                    text:root.daytext
+            
+            BoxLayout:
+                padding:2
+                spacing:2
+                size_hint:(1,0.2)
+                orientation:'vertical'
+                Label:
+                    size_hint:(0.15,0.29)
+                    pos_hint:{'x':0.40,'y':0.2}
+                    text:'сумма'
+                    font_size:"14sp"
+                MDTextFieldRect:
+                    id:input_many
+                    size_hint:(1,0.5)
+                    multiline:False
+                    font_size: "14sp"
+                    multiline:False
+                    color:0.1,0.1,1,1
+                    foreground_color:(.1,.1,1,1)
+                    halign:"center"
+                    background_color:(.1,.1,.1,1)
+                    border:(2,2,2,2)
+                    text:root.manytext
+            
+        MDIconButton:
+            icon:'images/saveicon1.png'
+            id:btnexit
+            user_font_size: "16sp"
+            pos_hint: {"x": .84, "y": .51}
+            on_press:
+                root.get_data_from_texts()
+            on_release:
+                app.root.current = 'generaldata'
+        
+        MDIconButton:
+            id:backbtn
+            icon:'images/backicon.png'
+            user_font_size:'9sp'
+            pos_hint: {"x": .84, "y": .04}
+            on_press:
+                app.root.current = 'generaldata'
+
+
+
+
+
+
+
+
+
+
+
